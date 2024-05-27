@@ -1,0 +1,10 @@
+{
+  "findelecApp": {
+    "StatutType": {
+      "null": "",
+      "DISPONIBLE": "DISPONIBLE",
+      "VOLE": "VOLE",
+      "RESERVE": "RESERVE"
+    }
+  }
+}

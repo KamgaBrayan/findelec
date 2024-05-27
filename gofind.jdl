@@ -1,0 +1,48 @@
+entity Objet {
+    nom String required,
+    description String,
+    type ObjetType required,
+    statut StatutType required
+}
+
+entity Utilisateur {
+    nom String required, 
+    prenom String required,
+    email String required,
+    motDePasse String required
+}
+
+entity Trajet {
+    villeDepart String required,
+    villeArrivee String required, 
+    dateDepart Instant required,
+    nombrePlacesDisponibles Integer required
+}
+
+entity Location {
+    adresse String required,
+    ville String required,
+    pays String required,
+    description String,
+    prixParNuit Double required
+}
+
+enum ObjetType {
+    ELECTRONIQUE, MAISON, VOITURE
+}
+
+enum StatutType {
+    DISPONIBLE, VOLE, RESERVE
+}
+
+relationship ManyToOne {
+    Objet{utilisateur} to Utilisateur
+}
+
+relationship OneToMany {
+    Utilisateur{locations} to Location{utilisateur}
+}
+
+relationship ManyToMany {
+    Trajet{passagers} to Utilisateur{trajets}
+}

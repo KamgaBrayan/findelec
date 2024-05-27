@@ -1,0 +1,28 @@
+{
+  "findelecApp": {
+    "trajet": {
+      "home": {
+        "title": "Trajets",
+        "refreshListLabel": "Refresh list",
+        "createLabel": "Create a new Trajet",
+        "createOrEditLabel": "Create or edit a Trajet",
+        "notFound": "No Trajets found"
+      },
+      "created": "A new Trajet is created with identifier {{ param }}",
+      "updated": "A Trajet is updated with identifier {{ param }}",
+      "deleted": "A Trajet is deleted with identifier {{ param }}",
+      "delete": {
+        "question": "Are you sure you want to delete Trajet {{ id }}?"
+      },
+      "detail": {
+        "title": "Trajet"
+      },
+      "id": "ID",
+      "villeDepart": "Ville Depart",
+      "villeArrivee": "Ville Arrivee",
+      "dateDepart": "Date Depart",
+      "nombrePlacesDisponibles": "Nombre Places Disponibles",
+      "utilisateur": "Utilisateur"
+    }
+  }
+}

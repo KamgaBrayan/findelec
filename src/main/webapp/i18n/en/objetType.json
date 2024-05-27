@@ -1,0 +1,10 @@
+{
+  "findelecApp": {
+    "ObjetType": {
+      "null": "",
+      "ELECTRONIQUE": "ELECTRONIQUE",
+      "MAISON": "MAISON",
+      "VOITURE": "VOITURE"
+    }
+  }
+}

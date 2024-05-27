@@ -1,0 +1,46 @@
+{
+  "annotations": {
+    "changelogDate": "20240527175738"
+  },
+  "applications": "*",
+  "fields": [
+    {
+      "fieldName": "nom",
+      "fieldType": "String",
+      "fieldValidateRules": ["required"]
+    },
+    {
+      "fieldName": "prenom",
+      "fieldType": "String",
+      "fieldValidateRules": ["required"]
+    },
+    {
+      "fieldName": "email",
+      "fieldType": "String",
+      "fieldValidateRules": ["required"]
+    },
+    {
+      "fieldName": "motDePasse",
+      "fieldType": "String",
+      "fieldValidateRules": ["required"]
+    }
+  ],
+  "name": "Utilisateur",
+  "relationships": [
+    {
+      "otherEntityName": "trajet",
+      "otherEntityRelationshipName": "utilisateur",
+      "relationshipName": "trajets",
+      "relationshipSide": "left",
+      "relationshipType": "one-to-many"
+    },
+    {
+      "otherEntityName": "location",
+      "otherEntityRelationshipName": "utilisateur",
+      "relationshipName": "locations",
+      "relationshipSide": "left",
+      "relationshipType": "one-to-many"
+    }
+  ],
+  "searchEngine": "no"
+}

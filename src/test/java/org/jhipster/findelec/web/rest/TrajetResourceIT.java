@@ -1,0 +1,594 @@
+package org.jhipster.findelec.web.rest;
+
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.hamcrest.Matchers.hasItem;
+import static org.hamcrest.Matchers.is;
+import static org.jhipster.findelec.domain.TrajetAsserts.*;
+import static org.jhipster.findelec.web.rest.TestUtil.createUpdateProxyForBean;
+
+import com.fasterxml.jackson.databind.ObjectMapper;
+import java.time.Duration;
+import java.time.Instant;
+import java.time.temporal.ChronoUnit;
+import java.util.List;
+import java.util.Random;
+import java.util.concurrent.atomic.AtomicLong;
+import org.jhipster.findelec.IntegrationTest;
+import org.jhipster.findelec.domain.Trajet;
+import org.jhipster.findelec.repository.EntityManager;
+import org.jhipster.findelec.repository.TrajetRepository;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.web.reactive.AutoConfigureWebTestClient;
+import org.springframework.http.MediaType;
+import org.springframework.security.test.context.support.WithMockUser;
+import org.springframework.test.web.reactive.server.WebTestClient;
+
+/**
+ * Integration tests for the {@link TrajetResource} REST controller.
+ */
+@IntegrationTest
+@AutoConfigureWebTestClient(timeout = IntegrationTest.DEFAULT_ENTITY_TIMEOUT)
+@WithMockUser
+class TrajetResourceIT {
+
+    private static final String DEFAULT_VILLE_DEPART = "AAAAAAAAAA";
+    private static final String UPDATED_VILLE_DEPART = "BBBBBBBBBB";
+
+    private static final String DEFAULT_VILLE_ARRIVEE = "AAAAAAAAAA";
+    private static final String UPDATED_VILLE_ARRIVEE = "BBBBBBBBBB";
+
+    private static final Instant DEFAULT_DATE_DEPART = Instant.ofEpochMilli(0L);
+    private static final Instant UPDATED_DATE_DEPART = Instant.now().truncatedTo(ChronoUnit.MILLIS);
+
+    private static final Integer DEFAULT_NOMBRE_PLACES_DISPONIBLES = 1;
+    private static final Integer UPDATED_NOMBRE_PLACES_DISPONIBLES = 2;
+
+    private static final String ENTITY_API_URL = "/api/trajets";
+    private static final String ENTITY_API_URL_ID = ENTITY_API_URL + "/{id}";
+
+    private static Random random = new Random();
+    private static AtomicLong longCount = new AtomicLong(random.nextInt() + (2 * Integer.MAX_VALUE));
+
+    @Autowired
+    private ObjectMapper om;
+
+    @Autowired
+    private TrajetRepository trajetRepository;
+
+    @Autowired
+    private EntityManager em;
+
+    @Autowired
+    private WebTestClient webTestClient;
+
+    private Trajet trajet;
+
+    /**
+     * Create an entity for this test.
+     *
+     * This is a static method, as tests for other entities might also need it,
+     * if they test an entity which requires the current entity.
+     */
+    public static Trajet createEntity(EntityManager em) {
+        Trajet trajet = new Trajet()
+            .villeDepart(DEFAULT_VILLE_DEPART)
+            .villeArrivee(DEFAULT_VILLE_ARRIVEE)
+            .dateDepart(DEFAULT_DATE_DEPART)
+            .nombrePlacesDisponibles(DEFAULT_NOMBRE_PLACES_DISPONIBLES);
+        return trajet;
+    }
+
+    /**
+     * Create an updated entity for this test.
+     *
+     * This is a static method, as tests for other entities might also need it,
+     * if they test an entity which requires the current entity.
+     */
+    public static Trajet createUpdatedEntity(EntityManager em) {
+        Trajet trajet = new Trajet()
+            .villeDepart(UPDATED_VILLE_DEPART)
+            .villeArrivee(UPDATED_VILLE_ARRIVEE)
+            .dateDepart(UPDATED_DATE_DEPART)
+            .nombrePlacesDisponibles(UPDATED_NOMBRE_PLACES_DISPONIBLES);
+        return trajet;
+    }
+
+    public static void deleteEntities(EntityManager em) {
+        try {
+            em.deleteAll(Trajet.class).block();
+        } catch (Exception e) {
+            // It can fail, if other entities are still referring this - it will be removed later.
+        }
+    }
+
+    @AfterEach
+    public void cleanup() {
+        deleteEntities(em);
+    }
+
+    @BeforeEach
+    public void initTest() {
+        deleteEntities(em);
+        trajet = createEntity(em);
+    }
+
+    @Test
+    void createTrajet() throws Exception {
+        long databaseSizeBeforeCreate = getRepositoryCount();
+        // Create the Trajet
+        var returnedTrajet = webTestClient
+            .post()
+            .uri(ENTITY_API_URL)
+            .contentType(MediaType.APPLICATION_JSON)
+            .bodyValue(om.writeValueAsBytes(trajet))
+            .exchange()
+            .expectStatus()
+            .isCreated()
+            .expectBody(Trajet.class)
+            .returnResult()
+            .getResponseBody();
+
+        // Validate the Trajet in the database
+        assertIncrementedRepositoryCount(databaseSizeBeforeCreate);
+        assertTrajetUpdatableFieldsEquals(returnedTrajet, getPersistedTrajet(returnedTrajet));
+    }
+
+    @Test
+    void createTrajetWithExistingId() throws Exception {
+        // Create the Trajet with an existing ID
+        trajet.setId(1L);
+
+        long databaseSizeBeforeCreate = getRepositoryCount();
+
+        // An entity with an existing ID cannot be created, so this API call must fail
+        webTestClient
+            .post()
+            .uri(ENTITY_API_URL)
+            .contentType(MediaType.APPLICATION_JSON)
+            .bodyValue(om.writeValueAsBytes(trajet))
+            .exchange()
+            .expectStatus()
+            .isBadRequest();
+
+        // Validate the Trajet in the database
+        assertSameRepositoryCount(databaseSizeBeforeCreate);
+    }
+
+    @Test
+    void checkVilleDepartIsRequired() throws Exception {
+        long databaseSizeBeforeTest = getRepositoryCount();
+        // set the field null
+        trajet.setVilleDepart(null);
+
+        // Create the Trajet, which fails.
+
+        webTestClient
+            .post()
+            .uri(ENTITY_API_URL)
+            .contentType(MediaType.APPLICATION_JSON)
+            .bodyValue(om.writeValueAsBytes(trajet))
+            .exchange()
+            .expectStatus()
+            .isBadRequest();
+
+        assertSameRepositoryCount(databaseSizeBeforeTest);
+    }
+
+    @Test
+    void checkVilleArriveeIsRequired() throws Exception {
+        long databaseSizeBeforeTest = getRepositoryCount();
+        // set the field null
+        trajet.setVilleArrivee(null);
+
+        // Create the Trajet, which fails.
+
+        webTestClient
+            .post()
+            .uri(ENTITY_API_URL)
+            .contentType(MediaType.APPLICATION_JSON)
+            .bodyValue(om.writeValueAsBytes(trajet))
+            .exchange()
+            .expectStatus()
+            .isBadRequest();
+
+        assertSameRepositoryCount(databaseSizeBeforeTest);
+    }
+
+    @Test
+    void checkDateDepartIsRequired() throws Exception {
+        long databaseSizeBeforeTest = getRepositoryCount();
+        // set the field null
+        trajet.setDateDepart(null);
+
+        // Create the Trajet, which fails.
+
+        webTestClient
+            .post()
+            .uri(ENTITY_API_URL)
+            .contentType(MediaType.APPLICATION_JSON)
+            .bodyValue(om.writeValueAsBytes(trajet))
+            .exchange()
+            .expectStatus()
+            .isBadRequest();
+
+        assertSameRepositoryCount(databaseSizeBeforeTest);
+    }
+
+    @Test
+    void checkNombrePlacesDisponiblesIsRequired() throws Exception {
+        long databaseSizeBeforeTest = getRepositoryCount();
+        // set the field null
+        trajet.setNombrePlacesDisponibles(null);
+
+        // Create the Trajet, which fails.
+
+        webTestClient
+            .post()
+            .uri(ENTITY_API_URL)
+            .contentType(MediaType.APPLICATION_JSON)
+            .bodyValue(om.writeValueAsBytes(trajet))
+            .exchange()
+            .expectStatus()
+            .isBadRequest();
+
+        assertSameRepositoryCount(databaseSizeBeforeTest);
+    }
+
+    @Test
+    void getAllTrajetsAsStream() {
+        // Initialize the database
+        trajetRepository.save(trajet).block();
+
+        List<Trajet> trajetList = webTestClient
+            .get()
+            .uri(ENTITY_API_URL)
+            .accept(MediaType.APPLICATION_NDJSON)
+            .exchange()
+            .expectStatus()
+            .isOk()
+            .expectHeader()
+            .contentTypeCompatibleWith(MediaType.APPLICATION_NDJSON)
+            .returnResult(Trajet.class)
+            .getResponseBody()
+            .filter(trajet::equals)
+            .collectList()
+            .block(Duration.ofSeconds(5));
+
+        assertThat(trajetList).isNotNull();
+        assertThat(trajetList).hasSize(1);
+        Trajet testTrajet = trajetList.get(0);
+
+        // Test fails because reactive api returns an empty object instead of null
+        // assertTrajetAllPropertiesEquals(trajet, testTrajet);
+        assertTrajetUpdatableFieldsEquals(trajet, testTrajet);
+    }
+
+    @Test
+    void getAllTrajets() {
+        // Initialize the database
+        trajetRepository.save(trajet).block();
+
+        // Get all the trajetList
+        webTestClient
+            .get()
+            .uri(ENTITY_API_URL + "?sort=id,desc")
+            .accept(MediaType.APPLICATION_JSON)
+            .exchange()
+            .expectStatus()
+            .isOk()
+            .expectHeader()
+            .contentType(MediaType.APPLICATION_JSON)
+            .expectBody()
+            .jsonPath("$.[*].id")
+            .value(hasItem(trajet.getId().intValue()))
+            .jsonPath("$.[*].villeDepart")
+            .value(hasItem(DEFAULT_VILLE_DEPART))
+            .jsonPath("$.[*].villeArrivee")
+            .value(hasItem(DEFAULT_VILLE_ARRIVEE))
+            .jsonPath("$.[*].dateDepart")
+            .value(hasItem(DEFAULT_DATE_DEPART.toString()))
+            .jsonPath("$.[*].nombrePlacesDisponibles")
+            .value(hasItem(DEFAULT_NOMBRE_PLACES_DISPONIBLES));
+    }
+
+    @Test
+    void getTrajet() {
+        // Initialize the database
+        trajetRepository.save(trajet).block();
+
+        // Get the trajet
+        webTestClient
+            .get()
+            .uri(ENTITY_API_URL_ID, trajet.getId())
+            .accept(MediaType.APPLICATION_JSON)
+            .exchange()
+            .expectStatus()
+            .isOk()
+            .expectHeader()
+            .contentType(MediaType.APPLICATION_JSON)
+            .expectBody()
+            .jsonPath("$.id")
+            .value(is(trajet.getId().intValue()))
+            .jsonPath("$.villeDepart")
+            .value(is(DEFAULT_VILLE_DEPART))
+            .jsonPath("$.villeArrivee")
+            .value(is(DEFAULT_VILLE_ARRIVEE))
+            .jsonPath("$.dateDepart")
+            .value(is(DEFAULT_DATE_DEPART.toString()))
+            .jsonPath("$.nombrePlacesDisponibles")
+            .value(is(DEFAULT_NOMBRE_PLACES_DISPONIBLES));
+    }
+
+    @Test
+    void getNonExistingTrajet() {
+        // Get the trajet
+        webTestClient
+            .get()
+            .uri(ENTITY_API_URL_ID, Long.MAX_VALUE)
+            .accept(MediaType.APPLICATION_PROBLEM_JSON)
+            .exchange()
+            .expectStatus()
+            .isNotFound();
+    }
+
+    @Test
+    void putExistingTrajet() throws Exception {
+        // Initialize the database
+        trajetRepository.save(trajet).block();
+
+        long databaseSizeBeforeUpdate = getRepositoryCount();
+
+        // Update the trajet
+        Trajet updatedTrajet = trajetRepository.findById(trajet.getId()).block();
+        updatedTrajet
+            .villeDepart(UPDATED_VILLE_DEPART)
+            .villeArrivee(UPDATED_VILLE_ARRIVEE)
+            .dateDepart(UPDATED_DATE_DEPART)
+            .nombrePlacesDisponibles(UPDATED_NOMBRE_PLACES_DISPONIBLES);
+
+        webTestClient
+            .put()
+            .uri(ENTITY_API_URL_ID, updatedTrajet.getId())
+            .contentType(MediaType.APPLICATION_JSON)
+            .bodyValue(om.writeValueAsBytes(updatedTrajet))
+            .exchange()
+            .expectStatus()
+            .isOk();
+
+        // Validate the Trajet in the database
+        assertSameRepositoryCount(databaseSizeBeforeUpdate);
+        assertPersistedTrajetToMatchAllProperties(updatedTrajet);
+    }
+
+    @Test
+    void putNonExistingTrajet() throws Exception {
+        long databaseSizeBeforeUpdate = getRepositoryCount();
+        trajet.setId(longCount.incrementAndGet());
+
+        // If the entity doesn't have an ID, it will throw BadRequestAlertException
+        webTestClient
+            .put()
+            .uri(ENTITY_API_URL_ID, trajet.getId())
+            .contentType(MediaType.APPLICATION_JSON)
+            .bodyValue(om.writeValueAsBytes(trajet))
+            .exchange()
+            .expectStatus()
+            .isBadRequest();
+
+        // Validate the Trajet in the database
+        assertSameRepositoryCount(databaseSizeBeforeUpdate);
+    }
+
+    @Test
+    void putWithIdMismatchTrajet() throws Exception {
+        long databaseSizeBeforeUpdate = getRepositoryCount();
+        trajet.setId(longCount.incrementAndGet());
+
+        // If url ID doesn't match entity ID, it will throw BadRequestAlertException
+        webTestClient
+            .put()
+            .uri(ENTITY_API_URL_ID, longCount.incrementAndGet())
+            .contentType(MediaType.APPLICATION_JSON)
+            .bodyValue(om.writeValueAsBytes(trajet))
+            .exchange()
+            .expectStatus()
+            .isBadRequest();
+
+        // Validate the Trajet in the database
+        assertSameRepositoryCount(databaseSizeBeforeUpdate);
+    }
+
+    @Test
+    void putWithMissingIdPathParamTrajet() throws Exception {
+        long databaseSizeBeforeUpdate = getRepositoryCount();
+        trajet.setId(longCount.incrementAndGet());
+
+        // If url ID doesn't match entity ID, it will throw BadRequestAlertException
+        webTestClient
+            .put()
+            .uri(ENTITY_API_URL)
+            .contentType(MediaType.APPLICATION_JSON)
+            .bodyValue(om.writeValueAsBytes(trajet))
+            .exchange()
+            .expectStatus()
+            .isEqualTo(405);
+
+        // Validate the Trajet in the database
+        assertSameRepositoryCount(databaseSizeBeforeUpdate);
+    }
+
+    @Test
+    void partialUpdateTrajetWithPatch() throws Exception {
+        // Initialize the database
+        trajetRepository.save(trajet).block();
+
+        long databaseSizeBeforeUpdate = getRepositoryCount();
+
+        // Update the trajet using partial update
+        Trajet partialUpdatedTrajet = new Trajet();
+        partialUpdatedTrajet.setId(trajet.getId());
+
+        partialUpdatedTrajet
+            .villeDepart(UPDATED_VILLE_DEPART)
+            .villeArrivee(UPDATED_VILLE_ARRIVEE)
+            .nombrePlacesDisponibles(UPDATED_NOMBRE_PLACES_DISPONIBLES);
+
+        webTestClient
+            .patch()
+            .uri(ENTITY_API_URL_ID, partialUpdatedTrajet.getId())
+            .contentType(MediaType.valueOf("application/merge-patch+json"))
+            .bodyValue(om.writeValueAsBytes(partialUpdatedTrajet))
+            .exchange()
+            .expectStatus()
+            .isOk();
+
+        // Validate the Trajet in the database
+
+        assertSameRepositoryCount(databaseSizeBeforeUpdate);
+        assertTrajetUpdatableFieldsEquals(createUpdateProxyForBean(partialUpdatedTrajet, trajet), getPersistedTrajet(trajet));
+    }
+
+    @Test
+    void fullUpdateTrajetWithPatch() throws Exception {
+        // Initialize the database
+        trajetRepository.save(trajet).block();
+
+        long databaseSizeBeforeUpdate = getRepositoryCount();
+
+        // Update the trajet using partial update
+        Trajet partialUpdatedTrajet = new Trajet();
+        partialUpdatedTrajet.setId(trajet.getId());
+
+        partialUpdatedTrajet
+            .villeDepart(UPDATED_VILLE_DEPART)
+            .villeArrivee(UPDATED_VILLE_ARRIVEE)
+            .dateDepart(UPDATED_DATE_DEPART)
+            .nombrePlacesDisponibles(UPDATED_NOMBRE_PLACES_DISPONIBLES);
+
+        webTestClient
+            .patch()
+            .uri(ENTITY_API_URL_ID, partialUpdatedTrajet.getId())
+            .contentType(MediaType.valueOf("application/merge-patch+json"))
+            .bodyValue(om.writeValueAsBytes(partialUpdatedTrajet))
+            .exchange()
+            .expectStatus()
+            .isOk();
+
+        // Validate the Trajet in the database
+
+        assertSameRepositoryCount(databaseSizeBeforeUpdate);
+        assertTrajetUpdatableFieldsEquals(partialUpdatedTrajet, getPersistedTrajet(partialUpdatedTrajet));
+    }
+
+    @Test
+    void patchNonExistingTrajet() throws Exception {
+        long databaseSizeBeforeUpdate = getRepositoryCount();
+        trajet.setId(longCount.incrementAndGet());
+
+        // If the entity doesn't have an ID, it will throw BadRequestAlertException
+        webTestClient
+            .patch()
+            .uri(ENTITY_API_URL_ID, trajet.getId())
+            .contentType(MediaType.valueOf("application/merge-patch+json"))
+            .bodyValue(om.writeValueAsBytes(trajet))
+            .exchange()
+            .expectStatus()
+            .isBadRequest();
+
+        // Validate the Trajet in the database
+        assertSameRepositoryCount(databaseSizeBeforeUpdate);
+    }
+
+    @Test
+    void patchWithIdMismatchTrajet() throws Exception {
+        long databaseSizeBeforeUpdate = getRepositoryCount();
+        trajet.setId(longCount.incrementAndGet());
+
+        // If url ID doesn't match entity ID, it will throw BadRequestAlertException
+        webTestClient
+            .patch()
+            .uri(ENTITY_API_URL_ID, longCount.incrementAndGet())
+            .contentType(MediaType.valueOf("application/merge-patch+json"))
+            .bodyValue(om.writeValueAsBytes(trajet))
+            .exchange()
+            .expectStatus()
+            .isBadRequest();
+
+        // Validate the Trajet in the database
+        assertSameRepositoryCount(databaseSizeBeforeUpdate);
+    }
+
+    @Test
+    void patchWithMissingIdPathParamTrajet() throws Exception {
+        long databaseSizeBeforeUpdate = getRepositoryCount();
+        trajet.setId(longCount.incrementAndGet());
+
+        // If url ID doesn't match entity ID, it will throw BadRequestAlertException
+        webTestClient
+            .patch()
+            .uri(ENTITY_API_URL)
+            .contentType(MediaType.valueOf("application/merge-patch+json"))
+            .bodyValue(om.writeValueAsBytes(trajet))
+            .exchange()
+            .expectStatus()
+            .isEqualTo(405);
+
+        // Validate the Trajet in the database
+        assertSameRepositoryCount(databaseSizeBeforeUpdate);
+    }
+
+    @Test
+    void deleteTrajet() {
+        // Initialize the database
+        trajetRepository.save(trajet).block();
+
+        long databaseSizeBeforeDelete = getRepositoryCount();
+
+        // Delete the trajet
+        webTestClient
+            .delete()
+            .uri(ENTITY_API_URL_ID, trajet.getId())
+            .accept(MediaType.APPLICATION_JSON)
+            .exchange()
+            .expectStatus()
+            .isNoContent();
+
+        // Validate the database contains one less item
+        assertDecrementedRepositoryCount(databaseSizeBeforeDelete);
+    }
+
+    protected long getRepositoryCount() {
+        return trajetRepository.count().block();
+    }
+
+    protected void assertIncrementedRepositoryCount(long countBefore) {
+        assertThat(countBefore + 1).isEqualTo(getRepositoryCount());
+    }
+
+    protected void assertDecrementedRepositoryCount(long countBefore) {
+        assertThat(countBefore - 1).isEqualTo(getRepositoryCount());
+    }
+
+    protected void assertSameRepositoryCount(long countBefore) {
+        assertThat(countBefore).isEqualTo(getRepositoryCount());
+    }
+
+    protected Trajet getPersistedTrajet(Trajet trajet) {
+        return trajetRepository.findById(trajet.getId()).block();
+    }
+
+    protected void assertPersistedTrajetToMatchAllProperties(Trajet expectedTrajet) {
+        // Test fails because reactive api returns an empty object instead of null
+        // assertTrajetAllPropertiesEquals(expectedTrajet, getPersistedTrajet(expectedTrajet));
+        assertTrajetUpdatableFieldsEquals(expectedTrajet, getPersistedTrajet(expectedTrajet));
+    }
+
+    protected void assertPersistedTrajetToMatchUpdatableProperties(Trajet expectedTrajet) {
+        // Test fails because reactive api returns an empty object instead of null
+        // assertTrajetAllUpdatablePropertiesEquals(expectedTrajet, getPersistedTrajet(expectedTrajet));
+        assertTrajetUpdatableFieldsEquals(expectedTrajet, getPersistedTrajet(expectedTrajet));
+    }
+}

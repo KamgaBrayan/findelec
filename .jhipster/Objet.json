@@ -1,0 +1,39 @@
+{
+  "annotations": {
+    "changelogDate": "20240527175737"
+  },
+  "applications": "*",
+  "fields": [
+    {
+      "fieldName": "nom",
+      "fieldType": "String",
+      "fieldValidateRules": ["required"]
+    },
+    {
+      "fieldName": "description",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "type",
+      "fieldType": "ObjetType",
+      "fieldValidateRules": ["required"],
+      "fieldValues": "ELECTRONIQUE,MAISON,VOITURE"
+    },
+    {
+      "fieldName": "statut",
+      "fieldType": "StatutType",
+      "fieldValidateRules": ["required"],
+      "fieldValues": "DISPONIBLE,VOLE,RESERVE"
+    }
+  ],
+  "name": "Objet",
+  "relationships": [
+    {
+      "otherEntityName": "utilisateur",
+      "relationshipName": "utilisateur",
+      "relationshipSide": "left",
+      "relationshipType": "many-to-one"
+    }
+  ],
+  "searchEngine": "no"
+}

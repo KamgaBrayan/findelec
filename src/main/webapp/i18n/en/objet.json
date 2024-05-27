@@ -1,0 +1,28 @@
+{
+  "findelecApp": {
+    "objet": {
+      "home": {
+        "title": "Objets",
+        "refreshListLabel": "Refresh list",
+        "createLabel": "Create a new Objet",
+        "createOrEditLabel": "Create or edit a Objet",
+        "notFound": "No Objets found"
+      },
+      "created": "A new Objet is created with identifier {{ param }}",
+      "updated": "A Objet is updated with identifier {{ param }}",
+      "deleted": "A Objet is deleted with identifier {{ param }}",
+      "delete": {
+        "question": "Are you sure you want to delete Objet {{ id }}?"
+      },
+      "detail": {
+        "title": "Objet"
+      },
+      "id": "ID",
+      "nom": "Nom",
+      "description": "Description",
+      "type": "Type",
+      "statut": "Statut",
+      "utilisateur": "Utilisateur"
+    }
+  }
+}
