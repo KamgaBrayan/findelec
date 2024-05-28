@@ -2,7 +2,6 @@ package org.jhipster.findelec.domain;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.jhipster.findelec.domain.TrajetTestSamples.*;
-import static org.jhipster.findelec.domain.UtilisateurTestSamples.*;
 
 import org.jhipster.findelec.web.rest.TestUtil;
 import org.junit.jupiter.api.Test;
@@ -24,14 +23,12 @@ class TrajetTest {
     }
 
     @Test
-    void utilisateurTest() throws Exception {
-        Trajet trajet = getTrajetRandomSampleGenerator();
-        Utilisateur utilisateurBack = getUtilisateurRandomSampleGenerator();
+    void hashCodeVerifier() throws Exception {
+        Trajet trajet = new Trajet();
+        assertThat(trajet.hashCode()).isZero();
 
-        trajet.setUtilisateur(utilisateurBack);
-        assertThat(trajet.getUtilisateur()).isEqualTo(utilisateurBack);
-
-        trajet.utilisateur(null);
-        assertThat(trajet.getUtilisateur()).isNull();
+        Trajet trajet1 = getTrajetSample1();
+        trajet.setId(trajet1.getId());
+        assertThat(trajet).hasSameHashCodeAs(trajet1);
     }
 }

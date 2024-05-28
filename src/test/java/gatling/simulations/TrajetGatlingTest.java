@@ -74,16 +74,7 @@ public class TrajetGatlingTest extends Simulation {
                     http("Create new trajet")
                         .post("/api/trajets")
                         .headers(headers_http_authenticated)
-                        .body(
-                            StringBody(
-                                "{" +
-                                "\"villeDepart\": \"SAMPLE_TEXT\"" +
-                                ", \"villeArrivee\": \"SAMPLE_TEXT\"" +
-                                ", \"dateDepart\": \"2020-01-01T00:00:00.000Z\"" +
-                                ", \"nombrePlacesDisponibles\": 0" +
-                                "}"
-                            )
-                        )
+                        .body(StringBody("{" + "}"))
                         .asJson()
                         .check(status().is(201))
                         .check(headerRegex("Location", "(.*)").saveAs("new_trajet_url"))

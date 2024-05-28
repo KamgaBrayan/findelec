@@ -425,7 +425,7 @@ class UtilisateurResourceIT {
         Utilisateur partialUpdatedUtilisateur = new Utilisateur();
         partialUpdatedUtilisateur.setId(utilisateur.getId());
 
-        partialUpdatedUtilisateur.email(UPDATED_EMAIL).motDePasse(UPDATED_MOT_DE_PASSE);
+        partialUpdatedUtilisateur.motDePasse(UPDATED_MOT_DE_PASSE);
 
         webTestClient
             .patch()

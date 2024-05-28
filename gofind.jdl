@@ -6,7 +6,7 @@ entity Objet {
 }
 
 entity Utilisateur {
-    nom String required, 
+    nom String required,
     prenom String required,
     email String required,
     motDePasse String required
@@ -14,7 +14,7 @@ entity Utilisateur {
 
 entity Trajet {
     villeDepart String required,
-    villeArrivee String required, 
+    villeArrivee String required,
     dateDepart Instant required,
     nombrePlacesDisponibles Integer required
 }
@@ -23,7 +23,7 @@ entity Location {
     adresse String required,
     ville String required,
     pays String required,
-    description String,
+    descriptionLoc String,
     prixParNuit Double required
 }
 

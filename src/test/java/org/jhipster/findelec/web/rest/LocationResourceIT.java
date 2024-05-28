@@ -439,7 +439,7 @@ class LocationResourceIT {
         Location partialUpdatedLocation = new Location();
         partialUpdatedLocation.setId(location.getId());
 
-        partialUpdatedLocation.description(UPDATED_DESCRIPTION);
+        partialUpdatedLocation.adresse(UPDATED_ADRESSE).ville(UPDATED_VILLE);
 
         webTestClient
             .patch()

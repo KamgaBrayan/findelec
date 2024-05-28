@@ -22,7 +22,6 @@
       "prenom": "Prenom",
       "email": "Email",
       "motDePasse": "Mot De Passe",
-      "trajets": "Trajets",
       "locations": "Locations"
     }
   }

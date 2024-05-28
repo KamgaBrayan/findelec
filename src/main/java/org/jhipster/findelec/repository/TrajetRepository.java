@@ -2,7 +2,6 @@ package org.jhipster.findelec.repository;
 
 import org.jhipster.findelec.domain.Trajet;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.r2dbc.repository.Query;
 import org.springframework.data.repository.reactive.ReactiveCrudRepository;
 import org.springframework.stereotype.Repository;
 import reactor.core.publisher.Flux;
@@ -14,12 +13,6 @@ import reactor.core.publisher.Mono;
 @SuppressWarnings("unused")
 @Repository
 public interface TrajetRepository extends ReactiveCrudRepository<Trajet, Long>, TrajetRepositoryInternal {
-    @Query("SELECT * FROM trajet entity WHERE entity.utilisateur_id = :id")
-    Flux<Trajet> findByUtilisateur(Long id);
-
-    @Query("SELECT * FROM trajet entity WHERE entity.utilisateur_id IS NULL")
-    Flux<Trajet> findAllWhereUtilisateurIsNull();
-
     @Override
     <S extends Trajet> Mono<S> save(S entity);
 

@@ -2,38 +2,9 @@
   "annotations": {
     "changelogDate": "20240527175739"
   },
-  "applications": "*",
-  "fields": [
-    {
-      "fieldName": "villeDepart",
-      "fieldType": "String",
-      "fieldValidateRules": ["required"]
-    },
-    {
-      "fieldName": "villeArrivee",
-      "fieldType": "String",
-      "fieldValidateRules": ["required"]
-    },
-    {
-      "fieldName": "dateDepart",
-      "fieldType": "Instant",
-      "fieldValidateRules": ["required"]
-    },
-    {
-      "fieldName": "nombrePlacesDisponibles",
-      "fieldType": "Integer",
-      "fieldValidateRules": ["required"]
-    }
-  ],
+  "applications": ["findelec"],
+  "fields": [],
   "name": "Trajet",
-  "relationships": [
-    {
-      "otherEntityName": "utilisateur",
-      "otherEntityRelationshipName": "trajets",
-      "relationshipName": "utilisateur",
-      "relationshipSide": "right",
-      "relationshipType": "many-to-one"
-    }
-  ],
+  "relationships": [],
   "searchEngine": "no"
 }

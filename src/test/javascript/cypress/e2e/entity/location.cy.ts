@@ -16,10 +16,10 @@ describe('Location e2e test', () => {
   const username = Cypress.env('E2E_USERNAME') ?? 'user';
   const password = Cypress.env('E2E_PASSWORD') ?? 'user';
   const locationSample = {
-    adresse: 'ah delightfully alongside',
-    ville: 'lest chaise doctor',
-    pays: 'at until onto',
-    prixParNuit: 30094.18,
+    adresse: 'max pose ideology',
+    ville: 'wherever theory escalator',
+    pays: 'canalize thick',
+    prixParNuit: 28041.55,
   };
 
   let location;
@@ -164,20 +164,20 @@ describe('Location e2e test', () => {
     });
 
     it('should create an instance of Location', () => {
-      cy.get(`[data-cy="adresse"]`).type('pfft into aboard');
-      cy.get(`[data-cy="adresse"]`).should('have.value', 'pfft into aboard');
+      cy.get(`[data-cy="adresse"]`).type('unfurl');
+      cy.get(`[data-cy="adresse"]`).should('have.value', 'unfurl');
 
-      cy.get(`[data-cy="ville"]`).type('both brr unhappy');
-      cy.get(`[data-cy="ville"]`).should('have.value', 'both brr unhappy');
+      cy.get(`[data-cy="ville"]`).type('super valiantly instructive');
+      cy.get(`[data-cy="ville"]`).should('have.value', 'super valiantly instructive');
 
-      cy.get(`[data-cy="pays"]`).type('apropos');
-      cy.get(`[data-cy="pays"]`).should('have.value', 'apropos');
+      cy.get(`[data-cy="pays"]`).type('mmm impressionable or');
+      cy.get(`[data-cy="pays"]`).should('have.value', 'mmm impressionable or');
 
-      cy.get(`[data-cy="description"]`).type('distance sharply');
-      cy.get(`[data-cy="description"]`).should('have.value', 'distance sharply');
+      cy.get(`[data-cy="description"]`).type('subgroup browse');
+      cy.get(`[data-cy="description"]`).should('have.value', 'subgroup browse');
 
-      cy.get(`[data-cy="prixParNuit"]`).type('14596.41');
-      cy.get(`[data-cy="prixParNuit"]`).should('have.value', '14596.41');
+      cy.get(`[data-cy="prixParNuit"]`).type('17476.1');
+      cy.get(`[data-cy="prixParNuit"]`).should('have.value', '17476.1');
 
       cy.get(entityCreateSaveButtonSelector).click();
 

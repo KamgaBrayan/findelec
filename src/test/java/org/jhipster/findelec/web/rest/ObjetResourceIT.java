@@ -399,7 +399,7 @@ class ObjetResourceIT {
         Objet partialUpdatedObjet = new Objet();
         partialUpdatedObjet.setId(objet.getId());
 
-        partialUpdatedObjet.nom(UPDATED_NOM).description(UPDATED_DESCRIPTION).type(UPDATED_TYPE).statut(UPDATED_STATUT);
+        partialUpdatedObjet.type(UPDATED_TYPE);
 
         webTestClient
             .patch()

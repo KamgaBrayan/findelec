@@ -39,7 +39,7 @@ public class Objet implements Serializable {
     private StatutType statut;
 
     @Transient
-    @JsonIgnoreProperties(value = { "trajets", "locations" }, allowSetters = true)
+    @JsonIgnoreProperties(value = { "locations" }, allowSetters = true)
     private Utilisateur utilisateur;
 
     @Column("utilisateur_id")

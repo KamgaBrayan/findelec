@@ -26,21 +26,6 @@
     }
   ],
   "name": "Utilisateur",
-  "relationships": [
-    {
-      "otherEntityName": "trajet",
-      "otherEntityRelationshipName": "utilisateur",
-      "relationshipName": "trajets",
-      "relationshipSide": "left",
-      "relationshipType": "one-to-many"
-    },
-    {
-      "otherEntityName": "location",
-      "otherEntityRelationshipName": "utilisateur",
-      "relationshipName": "locations",
-      "relationshipSide": "left",
-      "relationshipType": "one-to-many"
-    }
-  ],
+  "relationships": [],
   "searchEngine": "no"
 }

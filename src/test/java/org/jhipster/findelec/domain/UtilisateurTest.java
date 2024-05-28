@@ -2,7 +2,6 @@ package org.jhipster.findelec.domain;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.jhipster.findelec.domain.LocationTestSamples.*;
-import static org.jhipster.findelec.domain.TrajetTestSamples.*;
 import static org.jhipster.findelec.domain.UtilisateurTestSamples.*;
 
 import java.util.HashSet;
@@ -24,28 +23,6 @@ class UtilisateurTest {
 
         utilisateur2 = getUtilisateurSample2();
         assertThat(utilisateur1).isNotEqualTo(utilisateur2);
-    }
-
-    @Test
-    void trajetsTest() throws Exception {
-        Utilisateur utilisateur = getUtilisateurRandomSampleGenerator();
-        Trajet trajetBack = getTrajetRandomSampleGenerator();
-
-        utilisateur.addTrajets(trajetBack);
-        assertThat(utilisateur.getTrajets()).containsOnly(trajetBack);
-        assertThat(trajetBack.getUtilisateur()).isEqualTo(utilisateur);
-
-        utilisateur.removeTrajets(trajetBack);
-        assertThat(utilisateur.getTrajets()).doesNotContain(trajetBack);
-        assertThat(trajetBack.getUtilisateur()).isNull();
-
-        utilisateur.trajets(new HashSet<>(Set.of(trajetBack)));
-        assertThat(utilisateur.getTrajets()).containsOnly(trajetBack);
-        assertThat(trajetBack.getUtilisateur()).isEqualTo(utilisateur);
-
-        utilisateur.setTrajets(new HashSet<>());
-        assertThat(utilisateur.getTrajets()).doesNotContain(trajetBack);
-        assertThat(trajetBack.getUtilisateur()).isNull();
     }
 
     @Test

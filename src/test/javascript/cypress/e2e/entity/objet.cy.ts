@@ -15,7 +15,7 @@ describe('Objet e2e test', () => {
   const objetPageUrlPattern = new RegExp('/objet(\\?.*)?$');
   const username = Cypress.env('E2E_USERNAME') ?? 'user';
   const password = Cypress.env('E2E_PASSWORD') ?? 'user';
-  const objetSample = { nom: 'dearly', type: 'VOITURE', statut: 'RESERVE' };
+  const objetSample = { nom: 'haze unlike', type: 'VOITURE', statut: 'DISPONIBLE' };
 
   let objet;
 
@@ -159,15 +159,15 @@ describe('Objet e2e test', () => {
     });
 
     it('should create an instance of Objet', () => {
-      cy.get(`[data-cy="nom"]`).type('once though');
-      cy.get(`[data-cy="nom"]`).should('have.value', 'once though');
+      cy.get(`[data-cy="nom"]`).type('ew whenever frightened');
+      cy.get(`[data-cy="nom"]`).should('have.value', 'ew whenever frightened');
 
-      cy.get(`[data-cy="description"]`).type('hm');
-      cy.get(`[data-cy="description"]`).should('have.value', 'hm');
+      cy.get(`[data-cy="description"]`).type('joint water once');
+      cy.get(`[data-cy="description"]`).should('have.value', 'joint water once');
 
-      cy.get(`[data-cy="type"]`).select('MAISON');
+      cy.get(`[data-cy="type"]`).select('ELECTRONIQUE');
 
-      cy.get(`[data-cy="statut"]`).select('RESERVE');
+      cy.get(`[data-cy="statut"]`).select('DISPONIBLE');
 
       cy.get(entityCreateSaveButtonSelector).click();
 

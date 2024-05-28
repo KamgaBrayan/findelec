@@ -41,7 +41,7 @@ public class Location implements Serializable {
     private Double prixParNuit;
 
     @Transient
-    @JsonIgnoreProperties(value = { "trajets", "locations" }, allowSetters = true)
+    @JsonIgnoreProperties(value = { "locations" }, allowSetters = true)
     private Utilisateur utilisateur;
 
     @Column("utilisateur_id")

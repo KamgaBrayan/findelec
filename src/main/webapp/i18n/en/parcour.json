@@ -1,0 +1,23 @@
+{
+  "findelecApp": {
+    "parcour": {
+      "home": {
+        "title": "Parcours",
+        "refreshListLabel": "Refresh list",
+        "createLabel": "Create a new Parcour",
+        "createOrEditLabel": "Create or edit a Parcour",
+        "notFound": "No Parcours found"
+      },
+      "created": "A new Parcour is created with identifier {{ param }}",
+      "updated": "A Parcour is updated with identifier {{ param }}",
+      "deleted": "A Parcour is deleted with identifier {{ param }}",
+      "delete": {
+        "question": "Are you sure you want to delete Parcour {{ id }}?"
+      },
+      "detail": {
+        "title": "Parcour"
+      },
+      "id": "ID"
+    }
+  }
+}

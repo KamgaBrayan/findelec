@@ -1,0 +1,23 @@
+{
+  "findelecApp": {
+    "parcour": {
+      "home": {
+        "title": "Parcours",
+        "refreshListLabel": "Actualiser la liste",
+        "createLabel": "Créer un nouveau Parcour",
+        "createOrEditLabel": "Créer ou éditer un Parcour",
+        "notFound": "Aucun Parcour trouvé"
+      },
+      "created": "Un nouveau Parcour a été créé avec l'identifiant {{ param }}",
+      "updated": "Le Parcour avec l'identifiant {{ param }} a été mis à jour",
+      "deleted": "Le Parcour avec l'identifiant {{ param }} a été supprimé",
+      "delete": {
+        "question": "Êtes-vous certain de vouloir supprimer le Parcour {{ id }} ?"
+      },
+      "detail": {
+        "title": "Parcour"
+      },
+      "id": "ID"
+    }
+  }
+}

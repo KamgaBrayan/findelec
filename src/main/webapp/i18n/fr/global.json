@@ -11,7 +11,8 @@
         "objet": "Objet",
         "utilisateur": "Utilisateur",
         "trajet": "Trajet",
-        "location": "Location"
+        "location": "Location",
+        "parcour": "Parcour"
       },
       "account": {
         "main": "Compte",

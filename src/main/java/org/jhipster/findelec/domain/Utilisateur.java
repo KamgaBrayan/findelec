@@ -41,10 +41,6 @@ public class Utilisateur implements Serializable {
 
     @Transient
     @JsonIgnoreProperties(value = { "utilisateur" }, allowSetters = true)
-    private Set<Trajet> trajets = new HashSet<>();
-
-    @Transient
-    @JsonIgnoreProperties(value = { "utilisateur" }, allowSetters = true)
     private Set<Location> locations = new HashSet<>();
 
     // jhipster-needle-entity-add-field - JHipster will add fields here
@@ -112,37 +108,6 @@ public class Utilisateur implements Serializable {
 
     public void setMotDePasse(String motDePasse) {
         this.motDePasse = motDePasse;
-    }
-
-    public Set<Trajet> getTrajets() {
-        return this.trajets;
-    }
-
-    public void setTrajets(Set<Trajet> trajets) {
-        if (this.trajets != null) {
-            this.trajets.forEach(i -> i.setUtilisateur(null));
-        }
-        if (trajets != null) {
-            trajets.forEach(i -> i.setUtilisateur(this));
-        }
-        this.trajets = trajets;
-    }
-
-    public Utilisateur trajets(Set<Trajet> trajets) {
-        this.setTrajets(trajets);
-        return this;
-    }
-
-    public Utilisateur addTrajets(Trajet trajet) {
-        this.trajets.add(trajet);
-        trajet.setUtilisateur(this);
-        return this;
-    }
-
-    public Utilisateur removeTrajets(Trajet trajet) {
-        this.trajets.remove(trajet);
-        trajet.setUtilisateur(null);
-        return this;
     }
 
     public Set<Location> getLocations() {

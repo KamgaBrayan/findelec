@@ -10,9 +10,16 @@
     -->
     <changeSet id="20240527175739-2" author="jhipster">
 
-        <addForeignKeyConstraint baseColumnNames="utilisateur_id"
-                                 baseTableName="trajet"
-                                 constraintName="fk_trajet__utilisateur_id"
+        <addForeignKeyConstraint baseColumnNames="trajet_id"
+                                 baseTableName="rel_trajet__trajets"
+                                 constraintName="fk_rel_trajet__trajets__trajet_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="trajet"
+                                 />
+
+        <addForeignKeyConstraint baseColumnNames="trajets_id"
+                                 baseTableName="rel_trajet__trajets"
+                                 constraintName="fk_rel_trajet__trajets__trajets_id"
                                  referencedColumnNames="id"
                                  referencedTableName="utilisateur"
                                  />

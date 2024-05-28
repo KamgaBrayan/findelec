@@ -5,7 +5,6 @@ import {
   entityCreateButtonSelector,
   entityCreateSaveButtonSelector,
   entityCreateCancelButtonSelector,
-  entityEditButtonSelector,
   entityDeleteButtonSelector,
   entityConfirmDeleteButtonSelector,
 } from '../../support/entity';
@@ -15,12 +14,7 @@ describe('Trajet e2e test', () => {
   const trajetPageUrlPattern = new RegExp('/trajet(\\?.*)?$');
   const username = Cypress.env('E2E_USERNAME') ?? 'user';
   const password = Cypress.env('E2E_PASSWORD') ?? 'user';
-  const trajetSample = {
-    villeDepart: 'bitterly',
-    villeArrivee: 'deceivingly aw among',
-    dateDepart: '2024-05-27T17:21:01.243Z',
-    nombrePlacesDisponibles: 12618,
-  };
+  const trajetSample = {};
 
   let trajet;
 
@@ -116,27 +110,6 @@ describe('Trajet e2e test', () => {
         cy.url().should('match', trajetPageUrlPattern);
       });
 
-      it('edit button click should load edit Trajet page and go back', () => {
-        cy.get(entityEditButtonSelector).first().click();
-        cy.getEntityCreateUpdateHeading('Trajet');
-        cy.get(entityCreateSaveButtonSelector).should('exist');
-        cy.get(entityCreateCancelButtonSelector).click();
-        cy.wait('@entitiesRequest').then(({ response }) => {
-          expect(response.statusCode).to.equal(200);
-        });
-        cy.url().should('match', trajetPageUrlPattern);
-      });
-
-      it('edit button click should load edit Trajet page and save', () => {
-        cy.get(entityEditButtonSelector).first().click();
-        cy.getEntityCreateUpdateHeading('Trajet');
-        cy.get(entityCreateSaveButtonSelector).click();
-        cy.wait('@entitiesRequest').then(({ response }) => {
-          expect(response.statusCode).to.equal(200);
-        });
-        cy.url().should('match', trajetPageUrlPattern);
-      });
-
       it('last delete button click should delete instance of Trajet', () => {
         cy.intercept('GET', '/api/trajets/*').as('dialogDeleteRequest');
         cy.get(entityDeleteButtonSelector).last().click();
@@ -164,19 +137,6 @@ describe('Trajet e2e test', () => {
     });
 
     it('should create an instance of Trajet', () => {
-      cy.get(`[data-cy="villeDepart"]`).type('frankly block usually');
-      cy.get(`[data-cy="villeDepart"]`).should('have.value', 'frankly block usually');
-
-      cy.get(`[data-cy="villeArrivee"]`).type('bah');
-      cy.get(`[data-cy="villeArrivee"]`).should('have.value', 'bah');
-
-      cy.get(`[data-cy="dateDepart"]`).type('2024-05-27T13:29');
-      cy.get(`[data-cy="dateDepart"]`).blur();
-      cy.get(`[data-cy="dateDepart"]`).should('have.value', '2024-05-27T13:29');
-
-      cy.get(`[data-cy="nombrePlacesDisponibles"]`).type('32753');
-      cy.get(`[data-cy="nombrePlacesDisponibles"]`).should('have.value', '32753');
-
       cy.get(entityCreateSaveButtonSelector).click();
 
       cy.wait('@postEntityRequest').then(({ response }) => {

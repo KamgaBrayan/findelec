@@ -1,10 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { Button, Table } from 'reactstrap';
-import { Translate, TextFormat, getSortState } from 'react-jhipster';
+import { Translate, getSortState } from 'react-jhipster';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSort, faSortUp, faSortDown } from '@fortawesome/free-solid-svg-icons';
-import { APP_DATE_FORMAT, APP_LOCAL_DATE_FORMAT } from 'app/config/constants';
 import { ASC, DESC, SORT } from 'app/shared/util/pagination.constants';
 import { overrideSortStateWithQueryParams } from 'app/shared/util/entity-utils';
 import { useAppDispatch, useAppSelector } from 'app/config/store';
@@ -88,25 +87,6 @@ export const Trajet = () => {
                 <th className="hand" onClick={sort('id')}>
                   <Translate contentKey="findelecApp.trajet.id">ID</Translate> <FontAwesomeIcon icon={getSortIconByFieldName('id')} />
                 </th>
-                <th className="hand" onClick={sort('villeDepart')}>
-                  <Translate contentKey="findelecApp.trajet.villeDepart">Ville Depart</Translate>{' '}
-                  <FontAwesomeIcon icon={getSortIconByFieldName('villeDepart')} />
-                </th>
-                <th className="hand" onClick={sort('villeArrivee')}>
-                  <Translate contentKey="findelecApp.trajet.villeArrivee">Ville Arrivee</Translate>{' '}
-                  <FontAwesomeIcon icon={getSortIconByFieldName('villeArrivee')} />
-                </th>
-                <th className="hand" onClick={sort('dateDepart')}>
-                  <Translate contentKey="findelecApp.trajet.dateDepart">Date Depart</Translate>{' '}
-                  <FontAwesomeIcon icon={getSortIconByFieldName('dateDepart')} />
-                </th>
-                <th className="hand" onClick={sort('nombrePlacesDisponibles')}>
-                  <Translate contentKey="findelecApp.trajet.nombrePlacesDisponibles">Nombre Places Disponibles</Translate>{' '}
-                  <FontAwesomeIcon icon={getSortIconByFieldName('nombrePlacesDisponibles')} />
-                </th>
-                <th>
-                  <Translate contentKey="findelecApp.trajet.utilisateur">Utilisateur</Translate> <FontAwesomeIcon icon="sort" />
-                </th>
                 <th />
               </tr>
             </thead>
@@ -118,11 +98,6 @@ export const Trajet = () => {
                       {trajet.id}
                     </Button>
                   </td>
-                  <td>{trajet.villeDepart}</td>
-                  <td>{trajet.villeArrivee}</td>
-                  <td>{trajet.dateDepart ? <TextFormat type="date" value={trajet.dateDepart} format={APP_DATE_FORMAT} /> : null}</td>
-                  <td>{trajet.nombrePlacesDisponibles}</td>
-                  <td>{trajet.utilisateur ? <Link to={`/utilisateur/${trajet.utilisateur.id}`}>{trajet.utilisateur.id}</Link> : ''}</td>
                   <td className="text-end">
                     <div className="btn-group flex-btn-group-container">
                       <Button tag={Link} to={`/trajet/${trajet.id}`} color="info" size="sm" data-cy="entityDetailsButton">

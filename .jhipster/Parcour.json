@@ -1,0 +1,12 @@
+{
+  "annotations": {
+    "changelogDate": "20240528000434"
+  },
+  "fields": [],
+  "name": "Parcour",
+  "pagination": "pagination",
+  "readOnly": false,
+  "relationships": [],
+  "searchEngine": "no",
+  "service": "no"
+}

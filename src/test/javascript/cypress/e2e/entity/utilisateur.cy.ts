@@ -15,7 +15,12 @@ describe('Utilisateur e2e test', () => {
   const utilisateurPageUrlPattern = new RegExp('/utilisateur(\\?.*)?$');
   const username = Cypress.env('E2E_USERNAME') ?? 'user';
   const password = Cypress.env('E2E_PASSWORD') ?? 'user';
-  const utilisateurSample = { nom: 'hourly readily', prenom: 'suburban', email: 'Jaylin.Green@hotmail.com', motDePasse: 'sometimes' };
+  const utilisateurSample = {
+    nom: 'provided an',
+    prenom: 'overhear boo',
+    email: 'Armani.Ratke@gmail.com',
+    motDePasse: 'queasily oddly wavy',
+  };
 
   let utilisateur;
 
@@ -159,17 +164,17 @@ describe('Utilisateur e2e test', () => {
     });
 
     it('should create an instance of Utilisateur', () => {
-      cy.get(`[data-cy="nom"]`).type('gah');
-      cy.get(`[data-cy="nom"]`).should('have.value', 'gah');
+      cy.get(`[data-cy="nom"]`).type('despite across noisy');
+      cy.get(`[data-cy="nom"]`).should('have.value', 'despite across noisy');
 
-      cy.get(`[data-cy="prenom"]`).type('rise');
-      cy.get(`[data-cy="prenom"]`).should('have.value', 'rise');
+      cy.get(`[data-cy="prenom"]`).type('psst gorge guest');
+      cy.get(`[data-cy="prenom"]`).should('have.value', 'psst gorge guest');
 
-      cy.get(`[data-cy="email"]`).type('Alena_Altenwerth50@hotmail.com');
-      cy.get(`[data-cy="email"]`).should('have.value', 'Alena_Altenwerth50@hotmail.com');
+      cy.get(`[data-cy="email"]`).type('Savannah.Langosh@yahoo.com');
+      cy.get(`[data-cy="email"]`).should('have.value', 'Savannah.Langosh@yahoo.com');
 
-      cy.get(`[data-cy="motDePasse"]`).type('and');
-      cy.get(`[data-cy="motDePasse"]`).should('have.value', 'and');
+      cy.get(`[data-cy="motDePasse"]`).type('same headline');
+      cy.get(`[data-cy="motDePasse"]`).should('have.value', 'same headline');
 
       cy.get(entityCreateSaveButtonSelector).click();
 

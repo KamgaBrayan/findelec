@@ -17,12 +17,7 @@
       "detail": {
         "title": "Trajet"
       },
-      "id": "ID",
-      "villeDepart": "Ville Depart",
-      "villeArrivee": "Ville Arrivee",
-      "dateDepart": "Date Depart",
-      "nombrePlacesDisponibles": "Nombre Places Disponibles",
-      "utilisateur": "Utilisateur"
+      "id": "ID"
     }
   }
 }

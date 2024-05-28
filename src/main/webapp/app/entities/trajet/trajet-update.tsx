@@ -8,8 +8,6 @@ import { convertDateTimeFromServer, convertDateTimeToServer, displayDefaultDateT
 import { mapIdList } from 'app/shared/util/entity-utils';
 import { useAppDispatch, useAppSelector } from 'app/config/store';
 
-import { IUtilisateur } from 'app/shared/model/utilisateur.model';
-import { getEntities as getUtilisateurs } from 'app/entities/utilisateur/utilisateur.reducer';
 import { ITrajet } from 'app/shared/model/trajet.model';
 import { getEntity, updateEntity, createEntity, reset } from './trajet.reducer';
 
@@ -21,7 +19,6 @@ export const TrajetUpdate = () => {
   const { id } = useParams<'id'>();
   const isNew = id === undefined;
 
-  const utilisateurs = useAppSelector(state => state.utilisateur.entities);
   const trajetEntity = useAppSelector(state => state.trajet.entity);
   const loading = useAppSelector(state => state.trajet.loading);
   const updating = useAppSelector(state => state.trajet.updating);
@@ -37,8 +34,6 @@ export const TrajetUpdate = () => {
     } else {
       dispatch(getEntity(id));
     }
-
-    dispatch(getUtilisateurs({}));
   }, []);
 
   useEffect(() => {
@@ -52,15 +47,10 @@ export const TrajetUpdate = () => {
     if (values.id !== undefined && typeof values.id !== 'number') {
       values.id = Number(values.id);
     }
-    values.dateDepart = convertDateTimeToServer(values.dateDepart);
-    if (values.nombrePlacesDisponibles !== undefined && typeof values.nombrePlacesDisponibles !== 'number') {
-      values.nombrePlacesDisponibles = Number(values.nombrePlacesDisponibles);
-    }
 
     const entity = {
       ...trajetEntity,
       ...values,
-      utilisateur: utilisateurs.find(it => it.id.toString() === values.utilisateur?.toString()),
     };
 
     if (isNew) {
@@ -72,13 +62,9 @@ export const TrajetUpdate = () => {
 
   const defaultValues = () =>
     isNew
-      ? {
-          dateDepart: displayDefaultDateTime(),
-        }
+      ? {}
       : {
           ...trajetEntity,
-          dateDepart: convertDateTimeFromServer(trajetEntity.dateDepart),
-          utilisateur: trajetEntity?.utilisateur?.id,
         };
 
   return (
@@ -106,64 +92,6 @@ export const TrajetUpdate = () => {
                   validate={{ required: true }}
                 />
               ) : null}
-              <ValidatedField
-                label={translate('findelecApp.trajet.villeDepart')}
-                id="trajet-villeDepart"
-                name="villeDepart"
-                data-cy="villeDepart"
-                type="text"
-                validate={{
-                  required: { value: true, message: translate('entity.validation.required') },
-                }}
-              />
-              <ValidatedField
-                label={translate('findelecApp.trajet.villeArrivee')}
-                id="trajet-villeArrivee"
-                name="villeArrivee"
-                data-cy="villeArrivee"
-                type="text"
-                validate={{
-                  required: { value: true, message: translate('entity.validation.required') },
-                }}
-              />
-              <ValidatedField
-                label={translate('findelecApp.trajet.dateDepart')}
-                id="trajet-dateDepart"
-                name="dateDepart"
-                data-cy="dateDepart"
-                type="datetime-local"
-                placeholder="YYYY-MM-DD HH:mm"
-                validate={{
-                  required: { value: true, message: translate('entity.validation.required') },
-                }}
-              />
-              <ValidatedField
-                label={translate('findelecApp.trajet.nombrePlacesDisponibles')}
-                id="trajet-nombrePlacesDisponibles"
-                name="nombrePlacesDisponibles"
-                data-cy="nombrePlacesDisponibles"
-                type="text"
-                validate={{
-                  required: { value: true, message: translate('entity.validation.required') },
-                  validate: v => isNumber(v) || translate('entity.validation.number'),
-                }}
-              />
-              <ValidatedField
-                id="trajet-utilisateur"
-                name="utilisateur"
-                data-cy="utilisateur"
-                label={translate('findelecApp.trajet.utilisateur')}
-                type="select"
-              >
-                <option value="" key="0" />
-                {utilisateurs
-                  ? utilisateurs.map(otherEntity => (
-                      <option value={otherEntity.id} key={otherEntity.id}>
-                        {otherEntity.id}
-                      </option>
-                    ))
-                  : null}
-              </ValidatedField>
               <Button tag={Link} id="cancel-save" data-cy="entityCreateCancelButton" to="/trajet" replace color="info">
                 <FontAwesomeIcon icon="arrow-left" />
                 &nbsp;

@@ -2,7 +2,7 @@
   "annotations": {
     "changelogDate": "20240527175740"
   },
-  "applications": "*",
+  "applications": ["findelec"],
   "fields": [
     {
       "fieldName": "adresse",

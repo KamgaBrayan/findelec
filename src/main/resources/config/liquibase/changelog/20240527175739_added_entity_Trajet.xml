@@ -14,24 +14,8 @@
             <column name="id" type="bigint" autoIncrement="true" startWith="1500">
                 <constraints primaryKey="true" nullable="false"/>
             </column>
-            <column name="ville_depart" type="varchar(255)">
-                <constraints nullable="false" />
-            </column>
-            <column name="ville_arrivee" type="varchar(255)">
-                <constraints nullable="false" />
-            </column>
-            <column name="date_depart" type="${datetimeType}">
-                <constraints nullable="false" />
-            </column>
-            <column name="nombre_places_disponibles" type="integer">
-                <constraints nullable="false" />
-            </column>
-            <column name="utilisateur_id" type="bigint">
-                <constraints nullable="true" />
-            </column>
             <!-- jhipster-needle-liquibase-add-column - JHipster will add columns here -->
         </createTable>
-        <dropDefaultValue tableName="trajet" columnName="date_depart" columnDataType="${datetimeType}"/>
     </changeSet>
 
     <!-- jhipster-needle-liquibase-add-changeset - JHipster will add changesets here -->
@@ -51,10 +35,6 @@
                   tableName="trajet"
                   usePreparedStatements="true">
             <column name="id" type="numeric"/>
-            <column name="ville_depart" type="string"/>
-            <column name="ville_arrivee" type="string"/>
-            <column name="date_depart" type="date"/>
-            <column name="nombre_places_disponibles" type="numeric"/>
             <!-- jhipster-needle-liquibase-add-loadcolumn - JHipster (and/or extensions) can add load columns here -->
         </loadData>
     </changeSet>
